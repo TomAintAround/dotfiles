@@ -1,0 +1,66 @@
+[alias]
+    a = "add"
+    bl = "blame"
+    br = "branch"
+    c = "commit"
+    ca = "commit -a"
+    cl = "clone"
+    cm = "commit --amend"
+    cmn = "commit --amend --no-edit"
+    co = "checkout"
+    d = "diff"
+    f = "fetch"
+    i = "init"
+    l = "log --graph --oneline --decorate"
+    m = "merge"
+    pl = "pull"
+    ps = "push -u"
+    rb = "rebase"
+    rv = "revert"
+    s = "status"
+
+[blame]
+    pager = delta
+
+[commit]
+    gpgSign = true
+
+[core]
+    pager = delta
+
+[credential]
+    helper = git-credential-oauth
+
+[delta]
+    features = catppuccin-mocha
+    line-numbers = true
+    navigate = true
+    side-by-side = true
+    true-color = always
+
+[diff]
+    colorMoved = default
+
+[gpg]
+    format = ssh
+    program = gpg2
+
+[init]
+    defaultBranch = main
+
+[interactive]
+    diffFilter = delta --color-only
+
+[merge]
+    conflicstyle = diff3
+
+[init]
+    defaultBranch = main
+
+[user]
+    name = TomAintAround
+    email = Yeah I'm not sharing
+    signingKey = /home/tomm/.ssh/github.pub
+
+[include]
+    path = $XDG_CONFIG_HOME/git/catppuccin.gitconfig

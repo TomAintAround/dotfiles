@@ -1,0 +1,173 @@
+# Options
+set shell "bash"
+set shellopts '-eu'
+set ifs "\n"
+set scrolloff 5
+set icons
+set drawbox
+set hidden
+set mouse
+set relativenumber
+set number
+set info size
+set dircounts
+set period 1
+set incsearch
+set incfilter
+set truncatechar "…"
+set tabstop 4
+set cleaner ~/.config/lf/cleaner.bash
+set previewer ~/.config/lf/previewer.bash
+set cursorpreviewfmt "\033[4m"
+set infotimefmtnew '01/02 15:04'
+set infotimefmtold '01/02/2006'
+set errorfmt "\033[1;31m"
+set promptfmt "
+\033[38;2;49;50;68m\033[0m
+\033[48;2;49;50;68m\033[38;2;205;214;244m \033[0m
+\033[38;2;49;50;68m\033[48;2;69;71;90m\033[0m
+\033[48;2;69;71;90m\033[38;2;205;214;244m %w\033[0m
+\033[38;2;69;71;90m\033[0m
+ \033[38;4;205;214;244m%f\033[0m
+"
+
+source '~/.config/lf/opener'
+
+cmd trash %trash-put $fx
+cmd touch %IFS=" "; touch -- "$*"
+
+cmd on-cd &{{
+    zoxide add "$PWD"
+
+    # display repository status in your prompt
+    if [ -d .git ] || [ -f .git ]; then
+        branch=$(git branch --show-current 2>/dev/null) || true
+        remote=$(git config --get branch.$branch.remote 2>/dev/null) || true
+        url=$(git remote get-url $remote 2>/dev/null) || true
+        fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m [GIT BRANCH:> $branch >> $url]\033[0m"
+    else
+        fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
+    fi
+    lf -remote "send $id set promptfmt \"$fmt\""
+
+    printf "\033]0; ${PWD/#$HOME/\~}\007" > /dev/tty
+}}
+on-cd
+
+cmd on-select &{{
+    lf -remote "send $id set statfmt \"$(eza -ld --color=always "$f")\""
+}}
+
+cmd on-redraw %{{
+    if [ $lf_width -le 80 ]; then
+	lf -remote "send $id set ratios 1:2"
+    elif [ $lf_width -le 160 ]; then
+	lf -remote "send $id set ratios 1:2:3"
+    else
+	lf -remote "send $id set ratios 1:2:3:5"
+    fi
+}}
+
+cmd mkdir %{{
+    IFS=" "
+    mkdir -p -- "$*"
+    lf -remote "send $id select \"$*\""
+}}
+
+cmd chmodx &{{
+    chmod +x $fx
+    lf -remote "send $id reload"
+}}
+
+cmd extract ${{
+    aunpack $fx
+}}
+
+cmd zip ${{
+    set -f
+    mkdir $1
+    cp -r $fx $1
+    zip -r $1.zip $1
+    rm -rf $1
+    lf -remote "send $id unselect"
+}}
+cmd paste_link %{{
+    IFS='
+'
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    if [ $# -lt 1 ]; then
+	lf -remote "send $id echo no files to link"
+	exit 1
+    fi
+    case "$mode" in
+	# symbolically copy mode is indicating a soft link
+	copy) ln -sr -t . -- "$@";;
+	# while a move mode is indicating a hard link
+	move) ln -t . -- "$@";;
+    esac \
+    || exit $?
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+}}
+
+cmd follow_link %{{
+    lf -remote "send $id select \"$(readlink $f)\""
+}}
+
+cmd git_branch ${{
+    git branch | fzf | xargs git checkout
+    pwd_shell=$(pwd | sed 's/\\/\\\\/g;s/"/\\"/g')
+    lf -remote "send $id updir"
+    lf -remote "send $id cd \"$pwd_shell\""
+}}
+
+cmd fzf_search ${{
+    cmd="rg --column --line-number --no-heading --color=always --smart-case"
+    fzf --ansi --disabled --layout reverse --header "Search in files" --delimiter : \
+    --bind "start:reload([ -n {q} ] && $cmd -- {q} || true)" \
+    --bind "change:reload([ -n {q} ] && $cmd -- {q} || true)" \
+    --bind 'enter:become(lf -remote "send $id select \"$(printf "%s" {1} | sed '\''s/\\/\\\\/g;s/"/\\"/g'\'')\"")' \
+    --preview 'bat --paging=never --color=always --wrap=never --style=header,grid,numbers --line-range :50 "$file" -- {1}' --preview-window 'right:60%'
+}}
+
+cmd move-parent &{{
+    dironly="setlocal '$(dirname "$PWD")' dironly"
+    lf -remote "send $id :updir; $dironly true; $1; $dironly false; open"
+}}
+
+map p paste; clear
+map ad push :mkdir<space>
+map af push :touch<space>
+map T trash
+map P paste_link
+map <a-x> chmodx
+map <a-e> extract
+map <a-z> push :zip<space>
+map <a-d> %ripdrag $fx
+map J move-parent down
+map K move-parent up
+map O openwith
+map <c-f> fzf_search
+
+map i rename
+map <a-i> rename; cmd-home
+map <a-a> rename; cmd-end
+map <a-c> rename; cmd-delete-home
+map <a-C> rename; cmd-end; cmd-delete-home
+
+map bh cd ~
+map bc cd ~/.config
+map bv cd ~/.var/app
+map bl cd ~/.local
+map bd cd ~/Downloads
+map br cd /
+map be cd /etc
+map bn cd /etc/nixos
+map bL follow_link
+
+map gb :git_branch
+map gp ${{clear; git pull --rebase || true; echo "press ENTER"; read ENTER}}
+map gs ${{clear; git status; echo "press ENTER"; read ENTER}}
+map gl ${{clear; git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit}}
