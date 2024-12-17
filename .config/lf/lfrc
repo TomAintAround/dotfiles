@@ -37,104 +37,104 @@ cmd trash %trash-put $fx
 cmd touch %IFS=" "; touch -- "$*"
 
 cmd on-cd &{{
-    zoxide add "$PWD"
+	zoxide add "$PWD"
 
-    # display repository status in your prompt
-    if [ -d .git ] || [ -f .git ]; then
-        branch=$(git branch --show-current 2>/dev/null) || true
-        remote=$(git config --get branch.$branch.remote 2>/dev/null) || true
-        url=$(git remote get-url $remote 2>/dev/null) || true
-        fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m [GIT BRANCH:> $branch >> $url]\033[0m"
-    else
-        fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
-    fi
-    lf -remote "send $id set promptfmt \"$fmt\""
+	# display repository status in your prompt
+	if [ -d .git ] || [ -f .git ]; then
+		branch=$(git branch --show-current 2>/dev/null) || true
+		remote=$(git config --get branch.$branch.remote 2>/dev/null) || true
+		url=$(git remote get-url $remote 2>/dev/null) || true
+		fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%w\033[0m\033[33;1m [GIT BRANCH:> $branch >> $url]\033[0m"
+	else
+		fmt="\033[32;1m%u@%h\033[0m:\033[34;1m%d\033[0m\033[1m%f\033[0m"
+	fi
+	lf -remote "send $id set promptfmt \"$fmt\""
 
-    printf "\033]0; ${PWD/#$HOME/\~}\007" > /dev/tty
+	printf "\033]0; ${PWD/#$HOME/\~}\007" > /dev/tty
 }}
 on-cd
 
 cmd on-select &{{
-    lf -remote "send $id set statfmt \"$(eza -ld --color=always "$f")\""
+	lf -remote "send $id set statfmt \"$(eza -ld --color=always "$f")\""
 }}
 
 cmd on-redraw %{{
-    if [ $lf_width -le 80 ]; then
+	if [ $lf_width -le 80 ]; then
 	lf -remote "send $id set ratios 1:2"
-    elif [ $lf_width -le 160 ]; then
+	elif [ $lf_width -le 160 ]; then
 	lf -remote "send $id set ratios 1:2:3"
-    else
+	else
 	lf -remote "send $id set ratios 1:2:3:5"
-    fi
+	fi
 }}
 
 cmd mkdir %{{
-    IFS=" "
-    mkdir -p -- "$*"
-    lf -remote "send $id select \"$*\""
+	IFS=" "
+	mkdir -p -- "$*"
+	lf -remote "send $id select \"$*\""
 }}
 
 cmd chmodx &{{
-    chmod +x $fx
-    lf -remote "send $id reload"
+	chmod +x $fx
+	lf -remote "send $id reload"
 }}
 
 cmd extract ${{
-    aunpack $fx
+	aunpack $fx
 }}
 
 cmd zip ${{
-    set -f
-    mkdir $1
-    cp -r $fx $1
-    zip -9 -r $1.zip $1
-    rm -rf $1
-    lf -remote "send $id unselect"
+	set -f
+	mkdir $1
+	cp -r $fx $1
+	zip -9 -r $1.zip $1
+	rm -rf $1
+	lf -remote "send $id unselect"
 }}
 cmd paste_link %{{
-    IFS='
+	IFS='
 '
-    set -- $(cat ~/.local/share/lf/files)
-    mode="$1"
-    shift
-    if [ $# -lt 1 ]; then
+	set -- $(cat ~/.local/share/lf/files)
+	mode="$1"
+	shift
+	if [ $# -lt 1 ]; then
 	lf -remote "send $id echo no files to link"
 	exit 1
-    fi
-    case "$mode" in
+	fi
+	case "$mode" in
 	# symbolically copy mode is indicating a soft link
 	copy) ln -sr -t . -- "$@";;
 	# while a move mode is indicating a hard link
 	move) ln -t . -- "$@";;
-    esac \
-    || exit $?
-    rm ~/.local/share/lf/files
-    lf -remote "send clear"
+	esac \
+	|| exit $?
+	rm ~/.local/share/lf/files
+	lf -remote "send clear"
 }}
 
 cmd follow_link %{{
-    lf -remote "send $id select \"$(readlink $f)\""
+	lf -remote "send $id select \"$(readlink $f)\""
 }}
 
 cmd git_branch ${{
-    git branch | fzf | xargs git checkout
-    pwd_shell=$(pwd | sed 's/\\/\\\\/g;s/"/\\"/g')
-    lf -remote "send $id updir"
-    lf -remote "send $id cd \"$pwd_shell\""
+	git branch | fzf | xargs git checkout
+	pwd_shell=$(pwd | sed 's/\\/\\\\/g;s/"/\\"/g')
+	lf -remote "send $id updir"
+	lf -remote "send $id cd \"$pwd_shell\""
 }}
 
 cmd fzf_search ${{
-    cmd="rg --column --line-number --no-heading --color=always --smart-case"
-    fzf --ansi --disabled --layout reverse --header "Search in files" --delimiter : \
-    --bind "start:reload([ -n {q} ] && $cmd -- {q} || true)" \
-    --bind "change:reload([ -n {q} ] && $cmd -- {q} || true)" \
-    --bind 'enter:become(lf -remote "send $id select \"$(printf "%s" {1} | sed '\''s/\\/\\\\/g;s/"/\\"/g'\'')\"")' \
-    --preview 'bat --paging=never --color=always --wrap=never --style=header,grid,numbers --line-range :50 "$file" -- {1}' --preview-window 'right:60%'
+	cmd="rg --column --line-number --no-heading --color=always --smart-case"
+	fzf --ansi --disabled --layout reverse --header "Search in files" --delimiter : \
+	--bind "start:reload([ -n {q} ] && $cmd -- {q} || true)" \
+	--bind "change:reload([ -n {q} ] && $cmd -- {q} || true)" \
+	--bind 'enter:become(lf -remote "send $id select \"$(printf "%s" {1} | sed '\''s/\\/\\\\/g;s/"/\\"/g'\'')\"")' \
+	--preview 'bat --paging=never --color=always --wrap=never --style=header,grid,numbers --line-range :50 "$file" -- {1}' --preview-window 'right:60%'
 }}
 
 cmd move-parent &{{
-    dironly="setlocal '$(dirname "$PWD")' dironly"
-    lf -remote "send $id :updir; $dironly true; $1; $dironly false; open"
+	dironly="setlocal '$(dirname "$PWD")' dironly"
+	lf -remote "send $id :updir; $dironly true; $1; $dironly false; open"
 }}
 
 map p paste; clear

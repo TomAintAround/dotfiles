@@ -1,3 +1,3 @@
 function man --wraps=batman
-    batman $argv
+	batman $argv
 end

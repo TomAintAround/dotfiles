@@ -1,3 +1,3 @@
 function flatrun --wraps='flatpak run' --description 'Runs a flatpak'
-    flatpak run $argv
+	flatpak run $argv
 end

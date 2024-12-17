@@ -1,7 +1,7 @@
 ##############################################################
-## This is an example configuration file. Copy it to        ##
+## This is an example configuration file. Copy it to		##
 ## $XDG_CONFIG_HOME/ncmpcpp/config or $HOME/.ncmpcpp/config ##
-## and set up your preferences.                             ##
+## and set up your preferences.								##
 ##############################################################
 #
 ##### directories ######
@@ -47,10 +47,10 @@ mpd_music_dir = ~/Music
 ## the relevant section for mpd.conf:
 ##
 ## audio_output {
-##        type            "fifo"
-##        name            "Visualizer feed"
-##        path            "/tmp/mpd.fifo"
-##        format          "44100:16:2"
+##		  type			  "fifo"
+##		  name			  "Visualizer feed"
+##		  path			  "/tmp/mpd.fifo"
+##		  format		  "44100:16:2"
 ## }
 ##
 ## If the visualization on occasion diverges from the audio output, please set
@@ -62,8 +62,8 @@ mpd_music_dir = ~/Music
 ##
 ## [audio]
 ## output = tee name=t ! queue ! autoaudiosink t.
-##        ! queue ! audio/x-raw,rate=44100,channels=2,format=S16LE
-##        ! udpsink host=localhost port=5555
+##		  ! queue ! audio/x-raw,rate=44100,channels=2,format=S16LE
+##		  ! udpsink host=localhost port=5555
 ##
 ## will make localhost:5555 available as a source of data for the stereo
 ## visualizer.
@@ -303,14 +303,14 @@ browser_sort_format = {%a - }{%t}|{%f} {%l}
 ## You can also:
 ##
 ## - give a column custom name by putting it after attributes, separated with
-##   character ':', e.g. {lr:Length} gives you right aligned column of lengths
-##   named "Length".
+##	 character ':', e.g. {lr:Length} gives you right aligned column of lengths
+##	 named "Length".
 ##
 ## - define sequence of tags, that have to be displayed in case predecessor is
-##   empty in a way similar to the one in classic song format, i.e. using '|'
-##   character, e.g. {a|c|p:Owner} creates column named "Owner" that tries to
-##   display artist tag and then composer and performer if previous ones are not
-##   available.
+##	 empty in a way similar to the one in classic song format, i.e. using '|'
+##	 character, e.g. {a|c|p:Owner} creates column named "Owner" that tries to
+##	 display artist tag and then composer and performer if previous ones are not
+##	 available.
 ##
 #
 song_columns_list_format = (35)[cyan]{ar} (35)[blue]{t|f:Title} (30)[white]{br} (4f)[green]{lr}
@@ -519,11 +519,11 @@ tag_editor_extended_numeration = yes
 ## - 1 - use mpd built-in searching (no regexes, pattern matching)
 ##
 ## - 2 - use ncmpcpp searching (pattern matching with support for regexes, but
-##       if your mpd is on a remote machine, downloading big database to process
-##       it can take a while
+##		 if your mpd is on a remote machine, downloading big database to process
+##		 it can take a while
 ##
 ## - 3 - match only exact values (this mode uses mpd function for searching in
-##       database and local one for searching in current playlist)
+##		 database and local one for searching in current playlist)
 ##
 #
 search_engine_default_search_mode = 2

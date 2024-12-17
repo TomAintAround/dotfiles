@@ -1,3 +1,3 @@
 function fd --wraps="fd --hidden --color='always'"
-    command fd --hidden --color='always' $argv
+	command fd --hidden --color='always' $argv
 end

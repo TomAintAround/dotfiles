@@ -1,93 +1,93 @@
 cmd open ${{
-    dem() {
+	dem() {
 	{ setsid -f "$@" >/dev/null 2>&1& } \
-	    || ({ nohup "$@" >/dev/null 2>&1& } &) \
-	    || (exec "$@" >/dev/null 2>&1&)
-    }
+		|| ({ nohup "$@" >/dev/null 2>&1& } &) \
+		|| (exec "$@" >/dev/null 2>&1&)
+	}
 
-    real_f="$(readlink -f $f || realpath $f)" \
+	real_f="$(readlink -f $f || realpath $f)" \
 
-    mime_type="$(\
+	mime_type="$(\
 	exiftool -s3 -MIMEType "$real_f" 2>/dev/null \
-	    || file --dereference -b --mime-type -- "$real_f" 2>/dev/null
-    )"
+		|| file --dereference -b --mime-type -- "$real_f" 2>/dev/null
+	)"
 
-    case "$mime_type" in
-    (application/pdf | application/postscript | image/vnd.djvu |    application/epub*)
+	case "$mime_type" in
+	(application/pdf | application/postscript | image/vnd.djvu |	application/epub*)
 	dem "${READER}" $fx
-    ;;
-    (text/html)
+	;;
+	(text/html)
 	case "${f##*.}" in
 	(xls) dem localc $f ;;
 	(*) dem "${BROWSER}" $f
 	esac
-    ;;
-    (text/troff)
+	;;
+	(text/troff)
 	case "${f##*.}" in
 	([0-9] | [01]p | [23]*) batman $fx ;;
 	(*) "${EDITOR}" $fx
 	esac
-    ;;
-    ( text/* | application/json | application/javascript | \
-    application/pgp-encrypted | inode/x-empty | application/octet-stream | \
-    application/x-gettext-translation )
+	;;
+	( text/* | application/json | application/javascript | \
+	application/pgp-encrypted | inode/x-empty | application/octet-stream | \
+	application/x-gettext-translation )
 	"${EDITOR}" $fx
-    ;;
-    (image/x-*)
+	;;
+	(image/x-*)
 	dem "${IMAGE_EDITOR}" $fx
-    ;;
-    (image/* )
+	;;
+	(image/* )
 	dem "${IMAGE_EDITOR}" $fx
-    ;;
-    (audio/*)
+	;;
+	(audio/*)
 	dem "${AUDIO_PLAYER}" $fx
-    ;;
-    (video/*)
+	;;
+	(video/*)
 	dem "${VIDEO_PLAYER}" $fx
-    ;;
-    (*)
+	;;
+	(*)
 	case "$f" in
 	( *.tar.bz | *.tar.bz2 | *.tbz | \
 	*.tbz2 | *.tar.gz | *.tgz | *.tar.lzma | \
 	*.tar.xz | *.txz | *.zip | *.rar | *.iso)
-	    mntdir="$f-archive"
-	    if ! [ -d "$mntdir" ]; then
+		mntdir="$f-archive"
+		if ! [ -d "$mntdir" ]; then
 		mkdir -- "$mntdir"
 		atool -X "$mntdir" "$f"
 		printf -- "%s\n" "$mntdir" >> "/tmp/__lf_archive_$id"
-	    fi
-	    lf -remote "send $id cd '$mntdir'"
-	    lf -remote "send $id reload"
+		fi
+		lf -remote "send $id cd '$mntdir'"
+		lf -remote "send $id reload"
 	;;
 	esac
 
 	for f in $fx; do
-	    dem "${OPENER}" $f
+		dem "${OPENER}" $f
 	done
 	;;
-    esac
+	esac
 }
 
 cmd openwith ${{
-    dem() {
+	dem() {
 	{ setsid -f "$@" >/dev/null 2>&1& } \
-	    || ({ nohup "$@" >/dev/null 2>&1& } &) \
-	    || (exec "$@" >/dev/null 2>&1&)
-    }
+		|| ({ nohup "$@" >/dev/null 2>&1& } &) \
+		|| (exec "$@" >/dev/null 2>&1&)
+	}
 
-    real_f="$(readlink -f $f || realpath $f)" \
-    mime_type="$(\
+	real_f="$(readlink -f $f || realpath $f)" \
+	mime_type="$(\
 	exiftool -s3 -MIMEType "$real_f" \
-	    || file --dereference -b --mime-type -- "$real_f"
-    )"
+		|| file --dereference -b --mime-type -- "$real_f"
+	)"
 
-    menu_select() {
+	menu_select() {
 	nl -nln | fzf --with-nth 2.. | cut -d' ' -f1
-    }
+	}
 
-    case "$mime_type" in
-    ( text/* | application/json | application/javascript | \
-    application/pgp-encrypted | inode/x-empty | application/octet-stream )
+	case "$mime_type" in
+	( text/* | application/json | application/javascript | \
+	application/pgp-encrypted | inode/x-empty | application/octet-stream )
 	app=$(menu_select <<-\EOF
 	$EDITOR
 	$EDITOR (new terminal)
@@ -101,9 +101,9 @@ cmd openwith ${{
 	(3) nano $fx ;;
 	(4) dem "${TERMINAL}" -e nano $fx ;;
 	esac
-    ;;
+	;;
 
-    (image/svg+xml | image/png | image/jpeg | image/gif )
+	(image/svg+xml | image/png | image/jpeg | image/gif )
 	app=$(menu_select <<-\EOF
 	gimp
 	EOF
@@ -111,9 +111,9 @@ cmd openwith ${{
 	case "$app" in
 	(1) dem gimp $fx ;;
 	esac
-    ;;
+	;;
 
-    (image/x-*)
+	(image/x-*)
 	app=$(menu_select <<-\EOF
 	gimp
 	EOF
@@ -121,9 +121,9 @@ cmd openwith ${{
 	case "$app" in
 	(1) dem gimp $fx ;;
 	esac
-    ;;
+	;;
 
-    (audio/*)
+	(audio/*)
 	app=$(menu_select <<-\EOF
 	vlc
 	EOF
@@ -131,9 +131,9 @@ cmd openwith ${{
 	case "$app" in
 	(1) dem vlc $fx ;;
 	esac
-    ;;
+	;;
 
-    (video/*)
+	(video/*)
 	app=$(menu_select <<-\EOF
 	vlc
 	kdenlive
@@ -143,5 +143,5 @@ cmd openwith ${{
 	(1) dem vlc $fx ;;
 	(2) dem kdenlive $fx ;;
 	esac
-    esac
+	esac
 }
