@@ -69,8 +69,8 @@ case "$ext" in
 			draw "$cache.jpg"
 		else
 			pdftotext -nopgbrk -q -- "$file" -
-		fi
-		exit 0;;
+			exit 0
+		fi;;
 	docx|odt|epub)
 		pandoc -s -t plain -- "$file"
 		exit 0;;
@@ -106,8 +106,7 @@ case "$mime" in
 			else
 				draw "$file"
 			fi
-		fi
-		exit 0;;
+		fi;;
 	audio/*,[01])
 		exiftool -j "$1" | jq -C
 		exit 0;;
