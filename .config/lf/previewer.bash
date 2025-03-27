@@ -69,8 +69,8 @@ case "$ext" in
 			draw "$cache.jpg"
 		else
 			pdftotext -nopgbrk -q -- "$file" -
-			exit 0
-		fi;;
+		fi
+		exit 0;;
 	docx|odt|epub)
 		pandoc -s -t plain -- "$file"
 		exit 0;;
@@ -83,7 +83,8 @@ case "$ext" in
 			cache "$cache"
 			convert -- "$file" "$cache"
 			draw "$cache"
-		fi;;
+		fi
+		exit 0;;
 esac
 
 mime="$(file -Lb --mime-type -- "$file")"
@@ -105,7 +106,8 @@ case "$mime" in
 			else
 				draw "$file"
 			fi
-		fi;;
+		fi
+		exit 0;;
 	audio/*,[01])
 		exiftool -j "$1" | jq -C
 		exit 0;;
@@ -115,7 +117,8 @@ case "$mime" in
 			cache "$cache"
 			ffmpegthumbnailer -i "$file" -o "$cache" -s 0
 			draw "$cache"
-		fi;;
+		fi
+		exit 0;;
 esac
 
 header_text="File Type Classification"
