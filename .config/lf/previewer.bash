@@ -90,7 +90,7 @@ esac
 mime="$(file -Lb --mime-type -- "$file")"
 case "$mime" in
 	text/*)
-		bat --paging=never --color=always --wrap=never --style=header,grid,numbers --line-range :50 "$file"
+		bat --paging=never --color=always --wrap=never --style=grid,numbers --line-range :50 "$file"
 		exit 0;;
 	application/json,0)
 		jq -C < $file

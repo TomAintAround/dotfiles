@@ -60,11 +60,11 @@ cmd on-select &{{
 
 cmd on-redraw %{{
 	if [ $lf_width -le 80 ]; then
-	lf -remote "send $id set ratios 1:2"
+		lf -remote "send $id set ratios 1:2"
 	elif [ $lf_width -le 160 ]; then
-	lf -remote "send $id set ratios 1:2:3"
+		lf -remote "send $id set ratios 1:2:3"
 	else
-	lf -remote "send $id set ratios 1:2:3:5"
+		lf -remote "send $id set ratios 1:2:3:5"
 	fi
 }}
 
@@ -98,14 +98,14 @@ cmd paste_link %{{
 	mode="$1"
 	shift
 	if [ $# -lt 1 ]; then
-	lf -remote "send $id echo no files to link"
-	exit 1
+		lf -remote "send $id echo no files to link"
+		exit 1
 	fi
 	case "$mode" in
-	# symbolically copy mode is indicating a soft link
-	copy) ln -sr -t . -- "$@";;
-	# while a move mode is indicating a hard link
-	move) ln -t . -- "$@";;
+		# symbolically copy mode is indicating a soft link
+		copy) ln -sr -t . -- "$@";;
+		# while a move mode is indicating a hard link
+		move) ln -t . -- "$@";;
 	esac \
 	|| exit $?
 	rm ~/.local/share/lf/files
@@ -129,7 +129,7 @@ cmd fzf_search ${{
 	--bind "start:reload([ -n {q} ] && $cmd -- {q} || true)" \
 	--bind "change:reload([ -n {q} ] && $cmd -- {q} || true)" \
 	--bind 'enter:become(lf -remote "send $id select \"$(printf "%s" {1} | sed '\''s/\\/\\\\/g;s/"/\\"/g'\'')\"")' \
-	--preview 'bat --paging=never --color=always --wrap=never --style=header,grid,numbers --line-range :50 "$file" -- {1}' --preview-window 'right:60%'
+	--preview='~/.config/lf/cleaner.bash; ~/.config/lf/previewer.bash {1} "$FZF_PREVIEW_COLUMNS" "$FZF_PREVIEW_LINES" "$FZF_PREVIEW_LEFT" "$FZF_PREVIEW_TOP"' --preview-window 'right:60%'
 }}
 
 cmd move-parent &{{
