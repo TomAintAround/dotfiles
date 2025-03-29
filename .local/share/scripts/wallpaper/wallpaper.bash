@@ -28,6 +28,7 @@ wayland() {
 	else
 		printf "\033[0;32m[INFO]\033[0m Initializing SWWW and selecting wallpaper $new.jpg\n"
 		swww-daemon &
+		sleep 0.8
 		swww img $wallpapersDir/"$new".jpg
 	fi
 }
