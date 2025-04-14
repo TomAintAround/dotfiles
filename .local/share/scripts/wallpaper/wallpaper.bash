@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eux
+
 selected=$(cat $XDG_DATA_HOME/scripts/wallpaper/wallpaper-set)
 selected="${selected:-1}"
 wallpapersDir="$XDG_PICTURES_DIR"/Wallpapers
@@ -28,15 +30,15 @@ wayland() {
 	else
 		printf "\033[0;32m[INFO]\033[0m Initializing SWWW and selecting wallpaper $new.jpg\n"
 		swww-daemon &
-		sleep 0.8
+		sleep 1
 		swww img $wallpapersDir/"$new".jpg
 	fi
 }
 
 case "$XDG_SESSION_TYPE" in
 	"wayland")
-		wayland "$1"
-		;;
+		wayland "$@"
+	;;
 
 	*)
 		mode "$1"
