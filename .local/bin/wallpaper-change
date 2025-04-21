@@ -34,7 +34,7 @@ wayland() {
 		swww img "$wallpapersDir"/"$new".jpg --transition-step 150 --transition-type wipe --transition-bezier .33,1,.67,1
 	else
 		echo "Error: swww-daemon is not initialized" >&2
-		exit -1
+		exit 1
 	fi
 }
 
