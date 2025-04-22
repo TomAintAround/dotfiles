@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -eux
-
 wallpapersDir="$XDG_PICTURES_DIR"/Wallpapers
 wallpaperSet="$XDG_CACHE_HOME"/wallpaper-set
 if [ ! -f "$wallpaperSet" ]; then
