@@ -112,6 +112,10 @@ cmd paste_link %{{
 	lf -remote "send clear"
 }}
 
+cmd ripdrag %{{
+	ripdrag $fx
+}}
+		
 cmd follow_link %{{
 	lf -remote "send $id select \"$(readlink $f)\""
 }}
@@ -145,7 +149,7 @@ map P paste_link
 map <a-x> chmodx
 map <a-e> extract
 map <a-z> push :zip<space>
-map <a-d> %ripdrag $fx
+map <a-d> ripdrag
 map J move-parent down
 map K move-parent up
 map O openwith
