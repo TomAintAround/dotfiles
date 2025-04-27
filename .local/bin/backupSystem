@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+backupLocation="${XDG_DOCUMENTS_DIR:-$HOME/Documents}/Backup"
+lastBackupDir="$backupLocation/lastBackup"
+currentBackupDir="$backupLocation/currentBackup"
+backupList="$backupLocation/toBackup.txt"
+mkdir -p "$lastBackupDir" "$currentBackupDir"
+
+copyFiles() {
+    src="$1"
+    dest="$2"
+    if [ ! -d "$src/.git" ]; then
+        mkdir -p "$dest"
+        rsync -a --update "$src" "$dest/"
+    fi
+}
+
+if [[ "${1:-}" != "dontMove" ]]; then
+    rm -rf "${lastBackupDir:?}/"*
+    if [ "$(ls -A "$currentBackupDir")" ]; then
+        mv "$currentBackupDir"/* "$lastBackupDir"
+    fi
+fi
+
+while IFS= read -r fileOrDir; do
+    [[ -z "$fileOrDir" || "$fileOrDir" =~ ^# ]] && continue
+
+    parentDirs=$(dirname "$fileOrDir")
+    backupDest="$currentBackupDir$parentDirs"
+    copyFiles "$fileOrDir" "$backupDest" &
+done < "$backupList"
+wait
+
+echo "Backup complete."
