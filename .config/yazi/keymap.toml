@@ -1,0 +1,155 @@
+# Disable tab keymaps
+
+[[mgr.prepend_keymap]]
+on = "<C-c>"
+run = "noop"
+
+[[mgr.prepend_keymap]]
+on = "t"
+run = "noop"
+
+[[mgr.prepend_keymap]]
+on = "["
+run = "noop"
+
+[[mgr.prepend_keymap]]
+on = "]"
+run = "noop"
+
+[[mgr.prepend_keymap]]
+on = "{"
+run = "noop"
+
+[[mgr.prepend_keymap]]
+on = "}"
+run = "noop"
+
+
+# Bookmarks
+
+[[mgr.prepend_keymap]]
+on = ["g", "r"]
+run = "cd /"
+desc = "Go to /"
+
+[[mgr.prepend_keymap]]
+on = ["g", "e"]
+run = "cd /etc"
+desc = "Go to /etc"
+
+[[mgr.prepend_keymap]]
+on = ["g", "n"]
+run = "cd /etc/nixos"
+desc = "Go to /etc/nixos"
+
+[[mgr.prepend_keymap]]
+on = ["g", "h"]
+run = "cd ~"
+desc = "Go to ~"
+
+[[mgr.prepend_keymap]]
+on = ["g", "c"]
+run = "cd ~/.config"
+desc = "Go to ~/.config"
+
+[[mgr.prepend_keymap]]
+on = ["g", "l"]
+run = "cd ~/.local"
+desc = "Go to ~/.local"
+
+[[mgr.prepend_keymap]]
+on = ["g", "v"]
+run = "cd ~/.var/app"
+desc = "Go to ~/.var/app"
+
+[[mgr.prepend_keymap]]
+on = ["g", "t"]
+run = "cd ~/Documents"
+desc = "Go to ~/Documents"
+
+[[mgr.prepend_keymap]]
+on = ["g", "d"]
+run = "cd ~/Downloads"
+desc = "Go to ~/Downloads"
+
+[[mgr.prepend_keymap]]
+on = ["g", "p"]
+run = "cd ~/Pictures"
+desc = "Go to ~/Pictures"
+
+
+# Relative motions plugin
+
+[[mgr.prepend_keymap]]
+on = ["1"]
+run = "plugin relative-motions 1"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = ["2"]
+run = "plugin relative-motions 2"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = ["3"]
+run = "plugin relative-motions 3"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = ["4"]
+run = "plugin relative-motions 4"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = ["5"]
+run = "plugin relative-motions 5"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = ["6"]
+run = "plugin relative-motions 6"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = ["7"]
+run = "plugin relative-motions 7"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = ["8"]
+run = "plugin relative-motions 8"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = ["9"]
+run = "plugin relative-motions 9"
+desc = "Move in relative steps"
+
+
+# Chmod plugin
+
+[[mgr.prepend_keymap]]
+on = "<C-m>"
+run = "plugin chmod"
+desc = "Chmod on selected files"
+
+
+# Compression plugin
+
+[[mgr.prepend_keymap]]
+on = "<C-c>"
+run = "plugin compress"
+desc = "Archive selected files"
+
+
+# Misc
+
+[[mgr.prepend_keymap]]
+on = "<C-d>"
+run = 'shell -- ripdrag -x -i "$1"'
+desc = "Open drag and drop window"
+
+[[mgr.prepend_keymap]]
+on = "<C-e>"
+run = 'shell -- aunpack "$@"'
+desc = "Extract files from selected file"
