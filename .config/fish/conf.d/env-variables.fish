@@ -15,7 +15,7 @@ set -gx BROWSER firefox
 set -gx IMAGE_EDITOR gimp
 set -gx AUDIO_PLAYER vlc
 set -gx VIDEO_PLAYER vlc
-set -gx FILE_MANAGER lf
+set -gx FILE_MANAGER yazi
 
 # Paths
 set -gx GOPATH "$XDG_DATA_HOME"/go
