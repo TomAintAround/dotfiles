@@ -15,6 +15,9 @@ bind -M visual \ef 'commandline -f kill-whole-line && $FILE_MANAGER && commandli
 bind \ce 'commandline -f kill-whole-line && $EDITOR . && commandline -f execute'
 bind -M insert \ce 'commandline -f kill-whole-line && $EDITOR . && commandline -f execute'
 bind -M visual \ce 'commandline -f kill-whole-line && $EDITOR . && commandline -f execute'
+bind \cp 'commandline -f kill-whole-line && packMgr . && commandline -f execute'
+bind -M insert \cp 'commandline -f kill-whole-line && packMgr . && commandline -f execute'
+bind -M visual \cp 'commandline -f kill-whole-line && packMgr . && commandline -f execute'
 
 # Done Plugin
 set -a __done_exclude '^pgrep'
