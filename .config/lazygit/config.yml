@@ -2,7 +2,7 @@ git:
   log:
     showWholeGraph: true
   pagers:
-    - pager: 'delta --paging=never --features "catppuccin-mocha" --line-numbers --navigate --true-color=always'
+    - pager: delta --paging=never --features "catppuccin-mocha" --line-numbers --navigate --true-color=always
 gui:
   filterMode: fuzzy
   nerdFontsVersion: "3"
