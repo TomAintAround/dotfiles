@@ -11,7 +11,7 @@ set -gx EDITOR nvim
 set -gx PAGER "bat --paging=always"
 set -gx TERMINAL alacritty
 set -gx READER "libreoffice --draw"
-set -gx BROWSER firefox
+set -gx BROWSER librewolf
 set -gx IMAGE_EDITOR gimp
 set -gx AUDIO_PLAYER vlc
 set -gx VIDEO_PLAYER vlc
