@@ -21,47 +21,33 @@
 	sw = "switch"
 
 [blame]
-	pager = delta
-
-[commit]
-	gpgSign = true
-
-[core]
-	pager = delta
+	pager = "/nix/store/hfsr8bqqa9gaqwcsq5sjdfiqix7m8kqh-delta-0.18.2/bin/delta"
 
 [credential]
-	helper = git-credential-oauth
-
-[delta]
-	features = catppuccin-mocha
-	line-numbers = true
-	navigate = true
-	side-by-side = true
-	true-color = always
+	helper = "/nix/store/smrk1lzhn8gvnagg7lfsl2vl6jw7x11h-git-credential-oauth-0.16.0/bin/git-credential-oauth"
 
 [diff]
-	colorMoved = default
+	colorMoved = "default"
 
 [gpg]
-	format = ssh
-	program = gpg2
+	format = "ssh"
+
+[gpg "openpgp"]
+	program = "/nix/store/0i1vlhh0ivpjc7dvxz77wr5csr9n9aak-gnupg-2.4.8/bin/gpg"
 
 [init]
-	defaultBranch = main
-
-[interactive]
-	diffFilter = delta --color-only
+	defaultBranch = "main"
 
 [merge]
-	conflicstyle = diff3
+	conflictstyle = "diff3"
 
-[init]
-	defaultBranch = main
+[signing]
+	key = "/home/tomm/.ssh/github.pub"
+	signByDefault = true
 
 [user]
-	name = TomAintAround
-	email = Yeah I'm not sharing
-	signingKey = /home/tomm/.ssh/github.pub
+	email = "Yeah I'm not sharing"
+	name = "TomAintAround"
 
 [include]
-	path = $XDG_CONFIG_HOME/git/catppuccin.gitconfig
+	path = "$XDG_CONFIG_HOME/git/catppuccin.gitconfig"
