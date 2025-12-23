@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ]; then
+	exit 1
+fi
+
+backupDrive="$1"
+
+while read -r fileOrDir; do
+	parentDir=$(dirname "$fileOrDir")
+	backupDir="$backupDrive""$parentDir"
+	mkdir -p "$backupDir"
+	rsync -a --update "$HOME"/Backup/currentBackup"$fileOrDir" "$backupDir/" &
+done < "$HOME/Backup/toBackup.txt"
+wait
