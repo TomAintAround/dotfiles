@@ -21,19 +21,20 @@
 	sw = "switch"
 
 [blame]
-	pager = "/nix/store/hfsr8bqqa9gaqwcsq5sjdfiqix7m8kqh-delta-0.18.2/bin/delta"
+	pager = "delta"
 
 [credential]
-	helper = "/nix/store/smrk1lzhn8gvnagg7lfsl2vl6jw7x11h-git-credential-oauth-0.16.0/bin/git-credential-oauth"
+	helper = "git-credential-oauth"
 
 [diff]
 	colorMoved = "default"
 
 [gpg]
 	format = "ssh"
+	signingKey = "/home/tomm/.ssh/github.pub"
 
 [gpg "openpgp"]
-	program = "/nix/store/0i1vlhh0ivpjc7dvxz77wr5csr9n9aak-gnupg-2.4.8/bin/gpg"
+	program = "gpg"
 
 [init]
 	defaultBranch = "main"
@@ -42,12 +43,13 @@
 	conflictstyle = "diff3"
 
 [signing]
-	key = "/home/tomm/.ssh/github.pub"
+	key = "$HOME/.ssh/github.pub"
 	signByDefault = true
 
 [user]
 	email = "Yeah I'm not sharing"
 	name = "TomAintAround"
+	signingKey = "$HOME/.ssh/github.pub"
 
 [include]
 	path = "$XDG_CONFIG_HOME/git/catppuccin.gitconfig"
